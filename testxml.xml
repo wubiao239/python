@@ -1,0 +1,42 @@
+<hashtable>
+  <entry>
+    <string>actiontypedesc</string>
+    <string>Registration of homeinteriordecorators.pw for 1 year</string>
+  </entry>
+  <entry>
+    <string>unutilisedsellingamount</string>
+    <string>-4.000</string>
+  </entry>
+  <entry>
+    <string>pendingamount</string>
+    <string>4.0</string>
+  </entry>
+  <entry>
+    <string>sellingamount</string>
+    <string>-4.000</string>
+  </entry>
+  <entry>
+    <string>entityid</string>
+    <string>67262002</string>
+  </entry>
+  <entry>
+    <string>status</string>
+    <string>Success</string>
+  </entry>
+  <entry>
+    <string>customerid</string>
+    <string>14663552</string>
+  </entry>
+  <entry>
+    <string>invoiceid</string>
+    <string>60740358</string>
+  </entry>
+  <entry>
+    <string>sellingcurrencysymbol</string>
+    <string>CNY</string>
+  </entry>
+  <entry>
+    <string>actionstatusdesc</string>
+    <string>Invoice is partly paid</string>
+  </entry>
+</hashtable>
