@@ -13,12 +13,14 @@ import time
 import threading
 import datetime
 import os
-import  json 
+import  json
 from tldextract import extract
 import pytz
 from xml.dom import minidom
-domains = ["ambiencepublicschool.in", "hotelmars.in", "visaconnection.co.in", "smch.co.in", "globalheightsschool.in"] 
-st = datetime.datetime.strptime("2016-04-19 04:00:00", "%Y-%m-%d %H:%M:%S")
+import random
+#domain<=5
+domains = ["hotellandmark.co.in","sumermaljainpublicschool.in","gtec.co.in","kklawfirm.in"] 
+st = datetime.datetime.strptime("2016-04-19 03:59:00", "%Y-%m-%d %H:%M:%S")
 tz = pytz.timezone('Asia/Shanghai') 
 st = tz.localize(st)
 class regThread(threading.Thread):
@@ -39,7 +41,7 @@ class regThread(threading.Thread):
 
 
                     r = requests.get(regurl)
-                    # print(r.text)
+                    print(self.domain,"try register",j,"times")
                     if(checksuccess(r.text)):
                         print(self.domain, "sale sucessful")
                         break
@@ -47,9 +49,9 @@ class regThread(threading.Thread):
 
                 except Exception:
 
-                    print("try again!")
+                    print("request except try again!")
                 j = j + 1
-                if(j >= 5):
+                if(j >= 8):
                     break
 
         def checksuccess(xml):
@@ -66,7 +68,7 @@ class regThread(threading.Thread):
 
                 sta = entry.getElementsByTagName("string")[0].childNodes[0].nodeValue.lower()
                 suc = entry.getElementsByTagName("string")[1].childNodes[0].nodeValue.lower()
-                # print(sta,suc)
+                #print(sta,suc)
                 if(sta == "status" and suc == "success"):
 
                     return True
@@ -87,49 +89,55 @@ def register(domains):
 
 
     i = 1
-    j = 1
+    j=1
     t1 = datetime.datetime.now(tz)
     while 1 :
+        strdomains=""
+        strtlds=""
         for domain in domains:
+              
             subdomain, maindomain, tld = extract(domain)
-            checkurl = "https://test.httpapi.com/api/domains/available.json?auth-userid=646061&api-key=sP6NPKSyagaoitKcihSlMMdAEmot3zFq&domain-name=" + maindomain + "&tlds=" + tld
-            try :
-                r = requests.get(checkurl, timeout=10)
-                j = j + 1
-                
-                print(datetime.datetime.now(), domain, "alread check", j, "times")
+            strdomains =strdomains+"&domain-name="+maindomain
+            strtlds=strtlds+ "&tlds=" +tld
+        checkurl = "https://test.httpapi.com/api/domains/available.json?auth-userid=646061&api-key=sP6NPKSyagaoitKcihSlMMdAEmot3zFq" + strdomains + strtlds  
+        try :
+            r = requests.get(checkurl,timeout=10)
+            j=j+1
 
-            except:
-                print("request excption")
+            print(datetime.datetime.now(tz), "alread check", j, "times")
 
+        except:
+            print("request excption")
+            
+        for domain in domains:
+            
             res = json.loads(r.content.decode())
             # print(res)
-
+            
             status = res.get(domain).get('status')
-            print(domain, status)
-            if status and status.lower == 'unknown':
-                t = regThread(domain)
-                t.start()
-                
+            print(domain,status)
             if status and status.lower() == 'available':
                 print("available", domain)
                 t = regThread(domain)
                 t.start()
                 domains.remove(domain)
-                
-            time.sleep(1.8)
-        # time.sleep(0.5)
-        if(len(domains) == 0):
+                continue
+               
+            
+
+        time.sleep(0.5)
+        if(len(domains)==0):
             break
         t2 = datetime.datetime.now(tz)
-        # if(i % 50 == 0):
-            # print(self.domain, "alread check", i , "times")
+        #if(i % 50 == 0):
+            #print(self.domain, "alread check", i , "times")
 
         tm = (t2 - t1).seconds / (60)
-        
-        if(tm >= 10) :
-            time.sleep(20)
-            if(tm >= 40):
+
+        if(tm >= 8) :
+            t=random.randint(1,10)
+            time.sleep(t)
+            if(tm>=40):
                 break
         i = i + 1   
 
@@ -150,7 +158,7 @@ if __name__ == '__main__':
 
     checktime()
     register(domains)
-    # regThread("ampac.in").start()
+    #regThread("ampac.in").start()
 
 
 
